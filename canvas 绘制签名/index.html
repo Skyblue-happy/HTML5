@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas</title>
+		<style>
+			html {
+				background-color: lightgray;
+			}
+			
+			#canvas {
+				position: fixed;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				margin: auto;
+				background-color: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="canvas-box">
+			<canvas id="canvas" width="300px" height="300px"></canvas>
+		</div>
+	</body>
+	<script>
+		var canvas = document.getElementById('canvas');
+		var ctx = canvas.getContext('2d');
+		
+		if(canvas.getContext){
+			var ctx = canvas.getContext('2d')  // 拿到画笔
+		}
+		
+		console.log('浏览器支持canvas---');
+		canvas.onmousedown = function(ev){
+			ev = ev || window.event // 如果ev有就用ev 没有就用后面的，window.可以不加，event默认就是window.event			
+			ctx.beginPath()
+			document.onmousemove = function(ev){
+				ev = ev || window.event
+				ctx.moveTo(ev.clientX - canvas.offsetLeft,ev.clientY - canvas.offsetTop)
+				document.onmousemove = function(ev){
+					ctx.save()
+					ctx.strokeStyle = 'skyblue'
+					ev = ev || event
+					ctx.lineTo(ev.clientX - canvas.offsetLeft,ev.clientY - canvas.offsetTop)
+					ctx.stroke()
+					ctx.restore()
+				}
+			}
+			document.onmouseup = function(){
+				document.onmousemove = document.onmouseup = null
+			}
+			return false
+		}
+	</script>
+</html>
