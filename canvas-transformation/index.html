@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas变换</title>
+		<style>
+			html {
+				background-color: skyblue;
+			}
+			
+			#canvas {
+				position: fixed;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				margin: auto;
+				background-color: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="300" height="300"></canvas>
+	</body>
+	<script>
+		var flag = 0
+		var scale = 0
+		var flagScale = 0
+		var canvas = document.getElementById('canvas');
+		var ctx = canvas.getContext('2d');
+		
+		if(canvas.getContext){
+			var ctx = canvas.getContext('2d')
+			// ctx.translate(50,50)
+			// ctx.rotate(45*Math.PI/180) //旋转45度
+			// ctx.scale(1.5,1.5)
+			// ctx.beginPath()
+			// ctx.fillStyle='lightpink'
+			// ctx.fillRect(0,0,100,100)
+			
+			// 变换实例
+			// ctx.translate(150,150) //canvas画布中心
+			// ctx.save() // save()要放在设定原点后面，否则定时器读到的原点是空的
+			// // ctx.rotate()
+			// ctx.beginPath()
+			// ctx.fillStyle='lightpink'
+			// ctx.fillRect(-50,-50,100,100)
+			// ctx.restore()
+			// ctx.save() 
+			// ctx.translate(150,150) 
+			// ctx.beginPath()
+			// ctx.fillStyle='lightpink'
+			// ctx.fillRect(-50,-50,100,100)
+			// ctx.restore()
+			setInterval(function(){
+				flag++
+				ctx.clearRect(0,0,canvas.width,canvas.height)
+				ctx.save()
+				ctx.translate(150,150)
+				ctx.rotate(flag*Math.PI/180)
+				
+				if(scale == 100){
+					flagScale = -1
+				}else if(scale == 0){
+					flagScale = 1
+				}
+				scale+=flagScale
+				ctx.scale(scale/50,scale/50)
+				// ctx.scale(scale,scale)
+				
+				ctx.beginPath()
+				ctx.fillStyle='lightpink'
+				ctx.fillRect(-50,-50,100,100)
+				ctx.restore()
+			},30)
+		}
+	</script>
+</html>
