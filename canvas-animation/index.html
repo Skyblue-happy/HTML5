@@ -15,22 +15,23 @@
 			}
 			
 			#canvas {
-	/* 			position: fixed;
-				top: 0;
-				right: 0;
-				bottom: 0;
-				left: 0;
-				margin: auto; */
 				background-color: #ECEDEF;
 			}
 		</style>
 	</head>
 	<body>
-		<canvas id="canvas"></canvas>
+		<h2 class="title">2020/04/18 Saturday</h2>
+		<div class="des">
+			<ol>
+				<li>简单运用H5的canvas实现动画</li>
+				<li>主要是计时器的使用，记得清除动画。</li>
+			</ol>
+		</div>
+		<canvas id="canvas" height="150"></canvas>
 		<script type="text/javascript">
 			var canvas = document.getElementById('canvas');
 			canvas.width = document.documentElement.clientWidth
-			canvas.height = document.documentElement.clientHeight
+			// canvas.height = document.documentElement.clientHeight
 			
 			if(canvas.getContext){
 				var ctx = canvas.getContext('2d')  //拿到2d画笔 
