@@ -12,3 +12,7 @@ Some demos written in the process of learning HTML5.
 #### 3、canvas绘制时钟
 
 [demo地址](https://skyblue-happy.github.io/HTML5/canvas-clock/)
+
+#### 4、canvas动画
+
+[demo地址](https://skyblue-happy.github.io/HTML5/canvas-animation)

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas动画</title>
+		<style>
+			.title{
+				text-align: center;
+				margin-top: 100px;
+			}
+			.des{
+				margin: auto;
+				width: 500px;
+				text-align: left;
+			}
+			
+			#canvas {
+	/* 			position: fixed;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				margin: auto; */
+				background-color: #ECEDEF;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		<script type="text/javascript">
+			var canvas = document.getElementById('canvas');
+			canvas.width = document.documentElement.clientWidth
+			canvas.height = document.documentElement.clientHeight
+			
+			if(canvas.getContext){
+				var ctx = canvas.getContext('2d')  //拿到2d画笔 
+				var flag = 0
+				var frontValue = 0
+				setInterval(function(){
+					ctx.clearRect(0,0,canvas.width,canvas.height)
+					flag++
+					frontValue+=10
+					if(flag == 9){
+						flag = 1
+					}
+					var img = new Image()
+					img.src = 'images/'+flag+'.png'
+					
+					img.onload = function(){
+						draw(this)
+					}
+				},200)
+				
+				function draw(img){
+					ctx.drawImage(img,frontValue,0) 
+				}
+			}
+		</script>
+	</body>
+</html>
