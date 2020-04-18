@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas时钟</title>
+		<style>
+			html {
+				background-color: skyblue;
+			}
+			.title{
+				text-align: center;
+				margin-top: 100px;
+			}
+			.des{
+				margin: auto;
+				width: 500px;
+				text-align: left;
+			}
+			
+			#canvas {
+				position: fixed;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				margin: auto;
+				background-color: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<h2 class="title">2020/04/18 Saturday</h2>
+		<div class="des">
+			<ol>
+				<li>简单运用H5的canvas实现时钟</li>
+				<li>canvas中的变换是累加的</li>
+				<li>每次绘制新的内容就新增一组save(),beginPath(),restore()即可</li>
+			</ol>
+		</div>
+		<canvas id="canvas" width="400" height="400"></canvas>
+	</body>
+	<script>
+		var canvas = document.getElementById('canvas');
+		var ctx = canvas.getContext('2d');
+		
+		if(canvas.getContext){
+			var ctx = canvas.getContext('2d')  //拿到2d画笔 
+			setInterval(function(){
+				ctx.clearRect(0,0,canvas.width,canvas.height) // canvas变化之前先清空画布，不然会叠加起来
+				move()
+			},1000)
+			
+			function move(){
+				ctx.save()
+				ctx.lineWidth = 8
+				ctx.strokeStyle = 'black'
+				ctx.lineCap = 'round'
+				ctx.translate(200,200)  // 设置圆心
+				ctx.rotate(-90*Math.PI/180) // x轴从水平旋转到垂直，因为指针初始都是从12开始走的
+				ctx.beginPath()
+				
+				// 空心圆盘
+				ctx.save()
+				ctx.strokeStyle = '#325FA2'
+				ctx.lineWidth = 10
+				ctx.beginPath()
+				ctx.arc(0,0,140,0,360*Math.PI/180)
+				ctx.stroke()
+				ctx.restore()
+				
+				// 时针刻度
+				// 12点长的刻度
+				ctx.save()
+				ctx.lineWidth = 8
+				// ctx.beginPath()
+				// ctx.moveTo(100,0) // x轴的刻度，现在x轴是竖的
+				// ctx.lineTo(120,0)
+				// ctx.stroke()
+				for(var i=0;i<12;i++){
+					ctx.rotate(30*Math.PI/180) // canvas的变换是累加的，第一个是30度，第二份60度...
+					ctx.beginPath()
+					ctx.moveTo(100,0) // x轴的刻度，现在x轴是竖的
+					ctx.lineTo(120,0)
+					ctx.stroke()
+				}
+				ctx.restore()
+				
+				// 分针刻度
+				ctx.save()
+				ctx.lineWidth = 4
+				// 此时循环出来有一个问题，0,5,15...这些刻度上也画了分针，因为已经在该位置画了时针了，所以不需要
+				for(var i=0;i<60;i++){
+					// ctx.rotate(6*Math.PI/180) // canvas的变换是累加的，第一个是30度，第二份60度... 必定执行
+					if(i%5 != 0){
+						ctx.beginPath()
+						ctx.moveTo(114,0) // x轴的刻度，现在x轴是竖的
+						ctx.lineTo(120,0)
+						ctx.stroke()
+					}
+					ctx.rotate(6*Math.PI/180) // canvas的变换是累加的，第一个是30度，第二份60度... 必定执行
+				}
+				ctx.restore()
+				
+				// 时针、分针、秒针、表座
+				var date = new Date()
+				var s = date.getSeconds()
+				// var m = date.getMinutes()+s/60
+				// var h = date.getHours()+m/60
+				var m = date.getMinutes()
+				var h = date.getHours()
+				h = h>12?h-12:h
+				console.log('m',m);
+				console.log('h',h);
+				console.log('date',date);
+				
+				// 时针
+				ctx.save()
+				ctx.lineWidth = 14
+				ctx.rotate(h*30*Math.PI/180)
+				ctx.beginPath()
+				ctx.moveTo(-20,0)
+				ctx.lineTo(80,0)
+				ctx.stroke()
+				ctx.restore()
+				
+				// 分针
+				ctx.save()
+				ctx.lineWidth = 10
+				ctx.rotate(m*6*Math.PI/180)
+				ctx.beginPath()
+				ctx.moveTo(-28,0)
+				ctx.lineTo(112,0)
+				ctx.stroke()
+				ctx.restore()
+				
+				// 秒针
+				ctx.save()
+				ctx.lineWidth = 6
+				ctx.strokeStyle = '#D40000'
+				ctx.fillStyle = '#D40000'
+				ctx.rotate(s*6*Math.PI/180)
+				ctx.beginPath()
+				ctx.moveTo(-30,0)
+				ctx.lineTo(83,0)
+				ctx.stroke()
+					// 表座
+					ctx.beginPath()
+					ctx.arc(0,0,10,0,360*Math.PI/180)
+					ctx.fill()
+					// 秒针头
+					ctx.beginPath()
+					ctx.arc(96,0,10,0,360*Math.PI/180)
+					ctx.stroke()
+				ctx.restore()
+				 
+				ctx.restore()
+			}
+			
+		}
+	</script>
+</html>
