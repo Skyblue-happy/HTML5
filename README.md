@@ -16,3 +16,7 @@ Some demos written in the process of learning HTML5.
 #### 4、canvas动画
 
 [demo地址](https://skyblue-happy.github.io/HTML5/canvas-animation)
+
+#### 5、canvas刮刮卡
+
+[demo地址](https://skyblue-happy.github.io/HTML5/canvas-scraping-card)

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta  name="viewport" content="width=device-width,intial-scal=1.0,user-scalable=no"/>
+		<title>canvas刮刮卡</title>
+		<style>
+			html,body{
+				padding: 0;
+				margin: 0;
+				height: 100%;
+				overflow: hidden;
+			}
+			.wrap,.ul-box,.ul-box>li{
+				margin: 0;
+				padding: 0;
+				height: 100%;
+				list-style: none;
+			}
+			.ul-box>li{
+				background: url(images/1.jpg);
+				background-size: auto 100%;
+			}
+			canvas{
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<canvas></canvas>
+			<ul class="ul-box">
+				<li></li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			var canvas = document.querySelector('canvas')
+			canvas.width = document.documentElement.clientWidth
+			canvas.height = document.documentElement.clientHeight
+			var ctx = canvas.getContext('2d');
+			
+			if (canvas.getContext) {
+				var ctx = canvas.getContext('2d') //拿到2d画笔 
+				var img = new Image()
+				img.src = 'images/2.jpg'
+				img.onload = function(){
+					draw()
+				}
+				
+				function draw(){
+					ctx.drawImage(img,0,0,canvas.width,canvas.height)
+					canvas.addEventListener('touchstart',function(ev){
+						console.log('draw()---');
+						console.log('ev',ev);
+						ev = ev || event
+						var touchC = ev.changedTouches[0] //触屏列表中的第一个
+						var x = touchC.clientX - canvas.offsetLeft
+						var y = touchC.clientY - canvas.offsetTop
+						
+						ctx.globalCompositeOperation = 'destination-out'
+						ctx.lineCap = 'round' //save()之前定义为全局样式
+						ctx.lineJoin = 'round'
+						ctx.lineWidth = 40
+						ctx.save()
+						
+						ctx.beginPath()
+						ctx.moveTo(x,y)
+						ctx.lineTo(x+1,y+1)
+						ctx.stroke()
+						ctx.restore()
+					})
+					
+					canvas.addEventListener('touchmove',function(ev){
+						console.log('move---');
+						ev = ev || event
+						var touchC = ev.changedTouches[0] //触屏列表中的第一个
+						var x = touchC.clientX - canvas.offsetLeft
+						var y = touchC.clientY - canvas.offsetTop
+						
+						ctx.save()
+						ctx.lineTo(x,y)
+						ctx.stroke()
+						ctx.restore()
+					})
+				}
+			}
+		</script>
+	</body>
+</html>
