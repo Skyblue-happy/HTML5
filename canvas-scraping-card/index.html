@@ -25,10 +25,12 @@
 				position: absolute;
 				top: 0;
 				left: 0;
+				transition: 1s;
 			}
 		</style>
 	</head>
 	<body>
+		
 		<div class="wrap">
 			<canvas></canvas>
 			<ul class="ul-box">
@@ -52,8 +54,8 @@
 				function draw(){
 					ctx.drawImage(img,0,0,canvas.width,canvas.height)
 					canvas.addEventListener('touchstart',function(ev){
-						console.log('draw()---');
-						console.log('ev',ev);
+						// console.log('draw()---');
+						// console.log('ev',ev);
 						ev = ev || event
 						var touchC = ev.changedTouches[0] //触屏列表中的第一个
 						var x = touchC.clientX - canvas.offsetLeft
@@ -73,7 +75,7 @@
 					})
 					
 					canvas.addEventListener('touchmove',function(ev){
-						console.log('move---');
+						// console.log('move---');
 						ev = ev || event
 						var touchC = ev.changedTouches[0] //触屏列表中的第一个
 						var x = touchC.clientX - canvas.offsetLeft
@@ -83,6 +85,25 @@
 						ctx.lineTo(x,y)
 						ctx.stroke()
 						ctx.restore()
+					})
+					
+					canvas.addEventListener('touchend',function(){
+						var imgData = ctx.getImageData(0,0,canvas.width,canvas.height) // imgdata描述的是canvas元素隐含像素数据的区域
+						var allPx = imgData.width*imgData.height //所有像素点的个数
+						var num = 0
+						for(var i=0; i<allPx; i++){
+							if(imgData.data[4*i+3] === 0){
+								num++
+								// console.log('num---',num);
+							}
+						}
+						if(num >= allPx/2){
+							canvas.style.opacity = 0
+						}
+					})
+					
+					canvas.addEventListener('webkitTransitionEnd',function(){
+						this.remove() // canvas变透明后移除canvas元素
 					})
 				}
 			}
