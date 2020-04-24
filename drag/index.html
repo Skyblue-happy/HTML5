@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>HTML5元素拖拽</title>
+		<style>
+			html {
+				width: 100%;
+				height: 100%;
+				background-color: #f8f8f8;
+				overflow: hidden;
+			}
+
+			.box {
+				position: absolute;
+				top: 500px;
+				left: 850px;
+				width: 200px;
+				height: 200px;
+				background-color: skyblue;
+			}
+			.title{
+				text-align: center;
+				margin-top: 100px;
+			}
+			.des{
+				margin: auto;
+				width: 500px;
+				text-align: left;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<h2 class="title">2020/04/24 Friday</h2>
+		<div class="des">
+			<ol>
+				<li>onmousedown/onmousemove/onmouseup 的运用</li>
+				<li>获取起始位置、鼠标点击的起始位置、鼠标移动的位置，放开鼠标后清除事件。</li>
+			</ol>
+		</div>
+		<div class="box"></div>
+		<script>
+			window.onload = function() {
+				var testNode = document.querySelector('.box')
+				var startPoint = {
+					x: 0,
+					y: 0
+				}
+				var mouseDownPoint = {
+					x: 0,
+					y: 0
+				}
+
+				testNode.onmousedown = function(ev) {
+					ev = ev || event
+					startPoint.x = this.offsetLeft
+					startPoint.y = this.offsetTop
+					mouseDownPoint.x = ev.clientX
+					mouseDownPoint.y = ev.clientY
+
+					// 绑定在文档上
+					// document.addEventListener('mousemove',function(ev){
+					document.onmousemove = function(ev) {
+						ev = ev || event
+						var mouseMovePoint = {
+							x: 0,
+							y: 0
+						}
+						mouseMovePoint.x = ev.clientX
+						mouseMovePoint.y = ev.clientY
+
+						var dis = {
+							x: 0,
+							y: 0
+						}
+						dis.x = mouseMovePoint.x - mouseDownPoint.x
+						dis.y = mouseMovePoint.y - mouseDownPoint.y
+						testNode.style.left = startPoint.x + dis.x + 'px'
+						testNode.style.top = startPoint.y + dis.y + 'px'
+					}
+
+					document.onmouseup = function() {
+						document.onmousemove = document.onmouseup = null
+					}
+					
+					// 禁止不了IE8以下浏览器的默认行为
+					return false
+				}
+			}
+		</script>
+	</body>
+</html>

@@ -17,8 +17,12 @@ Some demos written in the process of learning HTML5.
 
 [demo地址](https://skyblue-happy.github.io/HTML5/canvas-animation)
 
-#### 5、canvas刮刮卡
+#### 5、canvas橡皮擦
 
 预览时控制台切换到手机即可。
 
 [demo地址](https://skyblue-happy.github.io/HTML5/canvas-scraping-card)
+
+#### 6、元素拖拽
+
+[demo地址](https://skyblue-happy.github.io/HTML5/drag)
